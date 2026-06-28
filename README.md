@@ -31,7 +31,7 @@ DARUMA-binding uses precomputed per-residue ProtT5 embeddings.
 
 ## Run with Docker
 ```bash
-docker pull daruma-binding:v0.1.0 .
+docker pull daruma-binding:v0.1.0
 docker run --rm \
   -v "$PWD/sample_data":/work \
   daruma-binding:v0.1.0 \
