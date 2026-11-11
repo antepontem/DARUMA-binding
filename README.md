@@ -110,4 +110,4 @@ See [`LICENSE`](./LICENSE).
 
 The version of DARUMA-binding corresponding to the manuscript is archived on Zenodo:
 
-[Zenodo software DOI / URL to be added]
+https://doi.org/10.5281/zenodo.24133355
