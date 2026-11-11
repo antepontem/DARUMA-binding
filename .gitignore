@@ -1,4 +1,8 @@
+data/training/train_plddt.txt
+data/training/train_rsa.txt
+data/training/train_ss.txt
+
 __pycache__/
-*.pyc
+*.py[cod]
+
 .DS_Store
-*.log

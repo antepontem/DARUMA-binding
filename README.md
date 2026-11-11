@@ -1,52 +1,113 @@
 # DARUMA-binding
 
-DARUMA-binding is a predictor for binding residues in intrinsically disordered regions.
+DARUMA-binding is a prediction tool for identifying binding sites in intrinsically disordered regions (IDRs) of proteins.
 
-## Overview
+## Installation
 
-DARUMA-binding predicts binding residues in intrinsically disordered regions using precomputed ProtT5 embeddings. 
-The model outputs residue-wise binding probabilities and binary predictions in CAID format.
+Clone this repository:
+
+```bash
+git clone https://github.com/antepontem/DARUMA-binding.git
+cd DARUMA-binding
+```
+
+PyTorch must be installed separately according to your operating system and CUDA environment.
+
+After installing PyTorch, install the remaining dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+DARUMA-binding takes a FASTA file containing one or more amino acid sequences and predicts residue-level binding sites.
+
+Example:
+
+```bash
+python src/daruma_binding/predict.py -i input.fasta -o output.txt
+```
+
+Arguments:
+
+- `-i`: Input FASTA file containing one or more amino acid sequences.
+- `-o`: Output file path.
+
+See the `examples/` directory for example input files and execution examples.
 
 ## Input
 
-DARUMA-binding requires:
+Input sequences must be provided in FASTA format.
 
-1. A FASTA file
-2. A precomputed ProtT5 embedding file in NumPy `.npy` format
-
-The embedding array must have shape `L × 1024`, where `L` is the protein sequence length.
-
-## Protein language model
-
-DARUMA-binding uses precomputed per-residue ProtT5 embeddings.
-
-- Protein language model: `Rostlab/prot_t5_xl_half_uniref50-enc`
-- Embedding type: per-residue embedding
-- Embedding dimension: 1024
-- Input format: NumPy `.npy`
-- Embedding shape: `L × 1024`, where `L` is the sequence length
-- Parameters for embedding generation: default parameters
-- Fine-tuning of ProtT5: none
-- ProtT5 model and weights: not included in this Docker image
-
-## Run with Docker
-```bash
-docker pull daruma-binding:v0.1.0
-docker run --rm \
-  -v "$PWD/sample_data":/work \
-  daruma-binding:v0.1.0 \
-  --fasta /work/DP03914.fasta \
-  --embeddings /work/DP03914.npy \
-  --output /work/DP03914.caid \
-  --device cpu
-```
+A FASTA file may contain one or more amino acid sequences.
 
 ## Output
 
-The output is written in CAID format:
+For each input sequence, DARUMA-binding outputs the following information:
 
-```text
->sequence_id
-1    M    0.892000    1
-2    E    0.813000    1
-...
+1. Accession / FASTA header
+2. Amino acid sequence
+3. Binding probability for each residue
+4. Binary binding prediction for each residue (`1`: binding, `0`: non-binding; threshold = 0.26)
+5. Predicted pLDDT
+6. Predicted relative solvent accessibility (RSA)
+7. Predicted three-state secondary structure (SS3; `H`: helix, `S`: strand, `C`: coil)
+8. Predicted eight-state secondary structure (SS8)
+
+In addition to binding predictions, DARUMA-binding outputs predicted structural features used by the model.
+
+## Repository Structure
+
+- `src/`: Source code for DARUMA-binding.
+- `examples/`: Example inputs and execution scripts.
+- `data/`: Validation and test datasets. Large training datasets are available separately from Zenodo.
+- `reproduction/`: Results and scripts for reproducing the figures and tables in the paper.
+- `caid/`: Code submitted to CAID 4.
+
+## Reproduction
+
+Scripts and processed results used to reproduce the figures and tables reported in the manuscript are available in `reproduction/`.
+
+Each script corresponds to a figure or table in the manuscript and can be run using the processed results provided in the repository.
+
+See `reproduction/README.md` for details.
+
+## Data Availability
+
+The large training datasets used in this study are available from Zenodo:
+
+https://doi.org/10.5281/zenodo.24127965
+
+Validation and test datasets used for evaluation are included in this repository where applicable.
+
+## CAID 4 Submission
+
+The code submitted to CAID 4 was previously located in the root directory of this repository and has been moved to [`caid/`](./caid/).
+
+## Web Server
+
+DARUMA-binding is available at:
+
+https://antepontem.org/daruma_binding/
+
+## Tested Environment
+
+DARUMA-binding was tested in the following environment:
+
+- Ubuntu 18.04.5 LTS
+- Python 3.10.19
+- PyTorch 1.12.1+cu102
+- CUDA 10.2
+
+PyTorch should be installed according to the user's operating system, GPU, and CUDA environment.
+
+## License
+
+See [`LICENSE`](./LICENSE).
+
+## Citation
+
+The version of DARUMA-binding corresponding to the manuscript is archived on Zenodo:
+
+[Zenodo software DOI / URL to be added]
